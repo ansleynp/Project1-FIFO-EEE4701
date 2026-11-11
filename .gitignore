@@ -1,0 +1,21 @@
+# Python temporary files
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# Cocotb and simulator output
+sim_build/
+results.xml
+*.vcd
+*.fst
+*.vvp
+*.ghw
+
+# Coverage temporary files
+.coverage
+htmlcov/
+
+# Editor and operating system files
+.vscode/
+.DS_Store
