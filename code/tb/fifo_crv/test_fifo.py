@@ -86,3 +86,40 @@ async def test_driver_directed(dut):
     await driver.drive()
 
     dut._log.info("FIFO driver directed test passed")
+
+@cocotb.test()
+async def test_monitor_directed(dut):
+    from driver import FifoDriver
+    from monitor import FifoMonitor
+
+    cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
+
+    driver = FifoDriver(dut)
+    monitor = FifoMonitor(dut)
+
+    await driver.reset()
+
+    # Observe a write operation
+    write_task = cocotb.start_soon(monitor.observe_cycle())
+
+    await driver.drive(wr_en=1, wr_data=42)
+    write_sample = await write_task
+
+    assert write_sample["wr_en"] == 1
+    assert write_sample["wr_data"] == 42
+    assert write_sample["pre_count"] == 0
+    assert write_sample["post_count"] == 1
+    assert write_sample["post_rd_data"] == 42
+
+    # Observe a read operation
+    read_task = cocotb.start_soon(monitor.observe_cycle())
+
+    await driver.drive(rd_en=1)
+    read_sample = await read_task
+
+    assert read_sample["rd_en"] == 1
+    assert read_sample["pre_rd_data"] == 42
+    assert read_sample["post_count"] == 0
+    assert read_sample["post_empty"] == 1
+
+    dut._log.info("FIFO monitor directed test passed")
