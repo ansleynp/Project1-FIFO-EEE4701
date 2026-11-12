@@ -1,4 +1,7 @@
 """FIFO Driver"""
+"""Initializes and resets the FIFO, then applies read and write inputs
+before each rising clock edge. Waits for the FIFO to process each operation
+before continuing to the next transaction."""
 
 from cocotb.triggers import RisingEdge, FallingEdge, Timer
 
