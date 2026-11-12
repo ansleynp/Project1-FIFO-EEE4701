@@ -1,7 +1,7 @@
 """FIFO Monitor"""
 """Captures input signals and FIFO state before each rising clock edge,
 then records the updated outputs after the edge. Provides transaction 
-observations for the scoredbaord to verify."""
+observations for the scoredboard to verify."""
 
 from cocotb.triggers import RisingEdge, FallingEdge, Timer
 

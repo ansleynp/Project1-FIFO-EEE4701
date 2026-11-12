@@ -1,8 +1,4 @@
-# Contributions — <team name> · <track>
-
-<!-- Capstone, Milestones 1-4. Lives in your team repo root as CONTRIBUTIONS.md.
-     ONE file per team, updated at every milestone — not written at the end.
-     Delete every comment block before you submit. -->
+# Contributions — Project-Group 3 · <track>
 
 > This file and the git history are cross-checked against each other, and
 > against every member's confidential peer eval. Where the three disagree, the
@@ -10,10 +6,10 @@
 > them agree. A file written the night of M4 will not survive that check, and
 > the way it fails is by being vague.
 
-**Members:** <name (NID) · name (NID) · …>
-**Repo:** <URL>
-**Track:** RV32I core / AXI-Lite subsystem / secure_gate
-**Last updated:** <date> · **through milestone:** M__
+**Members:** Ansley Pennywitt (an855434) · Christian Reyes (NID)
+**Repo:** [<URL>](https://github.com/ansleynp/Project1-FIFO-EEE4701.git)
+**Track:** Project 1 - Constrained-Random Verification of a Synchronous FIFO
+**Last updated:** 11/12 · **through milestone:** M2
 
 ---
 
@@ -31,25 +27,26 @@ milestone reads far better than a uniform one nobody believes.
 
 ---
 
-## M1 — <due Wk 11>
+## M1 — Initial Repo Setup
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-|        |                 |                                  |               |
-|        |                 |                                  |               |
+| Ansley | Created repo + configured the repo setup | commit: 8fdeb5f | 100% |
 
-**Shared or paired work:**
+**Shared or paired work:** Shared discussions only about what we think is best for the repo setup to start off with.
 
 **What slipped, and who picked it up:**
 
 <!-- Every team has a milestone where something slipped. Saying so here, at the
      time, is what makes the rest of the file credible. -->
 
-## M2 — <due Wk 12>
+## M2 — Driver, Monitor, Scoreboard
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-|        |                 |                                  |               |
+| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, test_fifo.py commits: 0ff34ba, 01673d9 |               |
+| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, test_fifo.py commit: a43d47d |               |
+| |                 |                                  |               |
 
 **Shared or paired work:**
 
