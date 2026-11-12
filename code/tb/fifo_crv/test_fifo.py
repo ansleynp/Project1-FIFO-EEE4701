@@ -1,17 +1,4 @@
-"""STUDENT STARTER -- Week 5 constrained-random FIFO testbench (pyvsc).
-
-Goal: replace directed stimulus with a @vsc.randobj transaction and a proper
-scoreboard so the constrained-random suite finds the whole FIFO mutant pool.
-
-Right now this is deliberately weak: the transaction is uniform random (no bias
-toward the boundaries), the run is short, and the scoreboard checks *only*
-count. That leaves the full/empty flags, the FWFT head (rd_data), pointer wrap,
-and the simultaneous-read+write corner completely unchecked -- raise the
-found/total by finishing the TODOs.
-
-Run:    make SIM=icarus
-Score:  cd code && just mutate fifo_crv            # released pool
-        cd code && just mutate fifo_crv hidden     # hidden pool (grading)
+"""Project 1 Code
 """
 import random
 
@@ -72,3 +59,30 @@ async def test_crv(dut):
             f"count {int(dut.count.value)} != model {model.count}"
         # TODO: also check full, empty, and rd_data (the FWFT head) every cycle.
         await FallingEdge(dut.clk)
+
+@cocotb.test()
+async def test_driver_directed(dut):
+    from driver import FifoDriver
+
+    # Start the clock
+    cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
+
+    driver = FifoDriver(dut)
+
+    # Reset the FIFO
+    await driver.reset()
+    assert int(dut.count.value) == 0
+
+    # Write 42
+    await driver.drive(wr_en=1, wr_data=42)
+    assert int(dut.count.value) == 1
+    assert int(dut.rd_data.value) == 42
+
+    # Read the value
+    await driver.drive(rd_en=1)
+    assert int(dut.count.value) == 0
+
+    # Return to idle
+    await driver.drive()
+
+    dut._log.info("FIFO driver directed test passed")
