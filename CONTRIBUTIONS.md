@@ -1,11 +1,5 @@
 # Contributions — Project-Group 3 · <track>
 
-> This file and the git history are cross-checked against each other, and
-> against every member's confidential peer eval. Where the three disagree, the
-> conversation happens *before* the Professionalism row is scored — so make
-> them agree. A file written the night of M4 will not survive that check, and
-> the way it fails is by being vague.
-
 **Members:** Ansley Pennywitt (an855434) · Christian Reyes (ch784988)
 **Repo:** [<URL>](https://github.com/ansleynp/Project1-FIFO-EEE4701.git)
 **Track:** Project 1 - Constrained-Random Verification of a Synchronous FIFO
@@ -38,16 +32,13 @@ milestone reads far better than a uniform one nobody believes.
 **What slipped, and who picked it up:**
 Didn't include correct directories to start off had to to add a tb/ and crv/ later on (picked up by Ansley Pennywitt)
 
-<!-- Every team has a milestone where something slipped. Saying so here, at the
-     time, is what makes the rest of the file credible. -->
-
-## M2 — Driver, Monitor, Scoreboard
+## M2 — Testbench Components
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
 | Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, tb/test_fifo.py commits: 0ff34ba, 01673d9 |               |
 | Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, tb/test_fifo.py commit: a43d47d |               |
-| Christian Reyes | Implemented FIFO scoreboard + added directed test to verify basic functionality | tb/scoreboard.py, tb/test_fifo.py commit: 712a3d2 |               |
+| Christian Reyes | Implemented FIFO scoreboard + added directed test to verify basic functionality | tb/scoreboard.py, tb/test_fifo.py commit: 712a3d2 | 30% |
 
 **Shared or paired work:**
 
@@ -55,11 +46,13 @@ Didn't include correct directories to start off had to to add a tb/ and crv/ lat
 
 **Changes to the division of labor since M1, and why:**
 
-## M3 — <due Wk 13>
+## M3 — CRV and coverage
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
+| Christian Reyes | Added constrained-random FIFO stimulus, including fill and drain modes. | code/fifo_project/crv/test_fifo.py commit: 1f9f8d4 | 40% |
 | Ansley Pennywitt | Functional coverage implementation and integration (coverpoints, crosses, and coverage reporting) | tb/coverage.py, tb/test_fifo.py commit: 74e4dd7 |               |
+| Christian Reyes | Wrote the initial verification plan. | vplan.md commit: 4279865 | 10% |
 
 **Shared or paired work:**
 
@@ -67,11 +60,13 @@ Didn't include correct directories to start off had to to add a tb/ and crv/ lat
 
 **Changes to the division of labor since M2, and why:**
 
-## M4 — <due Wk 14, at the `m4` tag>
+## M4 — Final Testing and documentation
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
 |        |                 |                                  |               |
+| Christian Reyes | Filled in the mutation findings and documented the results. | FINDINGS.md commit: 1b847ed | 25% |
+| Christian Reyes | Cleaned up the verification-plan template. | vplan.md commit: 6e43376 | 10% |
 
 **Shared or paired work:**
 
@@ -86,13 +81,13 @@ first, so it must be consistent with the four sections above.
 
 | Member | Principal contributions (all four milestones) | Overall share |
 |--------|-----------------------------------------------|--------------:|
-|        |                                               |               |
-|        |                                               |               |
+| Christian Reyes | Scoreboard, constrained-random stimulus and fill/drain modes, initial verification plan, findings, and documentation cleanup. | 50% |
+| Ansley Pennywitt | Initial repository setup, driver and monitor, testbench integration, functional coverage, corner-case testing, coverage report, and file organization. | 50% |
 
 **The three things this team did that we would each defend in an interview:**
 
 1.
-2.
+2. Added constrained-random tests and functional coverage to exercise different FIFO states and combinations of reads and writes.
 3.
 
 ## Non-code contributions
@@ -102,11 +97,12 @@ artifact where one exists.
 
 | Member | Contribution | Where it shows |
 |--------|--------------|----------------|
-|        | spec archaeology / vplan authorship / debugging sessions / demo prep / review | |
+| Christian Reyes | Wrote the first version of the verification plan and later cleaned up the format. | vplan.md commits: 4279865, 6e43376 |
+| Christian Reyes | Updated the team contribution record and wrote the mutation findings. | CONTRIBUTIONS.md FINDINGS.md commits: d7369bd, 1b847ed |
 
 ## AI assistance
 
-We moved this section to ai_log.md
+AI was used to help with code organization, reviewing the coverage model, and writing parts of the documentation. The specific uses, who verified the work, and the results are recorded in ai_log.md
 
 ---
 
@@ -119,6 +115,3 @@ We moved this section to ai_log.md
       eval** — teammates' main contributions, an equity judgment, one sentence
       of evidence each — outside this repo, by the M4 deadline.
 
-<!-- The peer eval is individual and confidential. It does NOT go in the repo,
-     and it is not this file. A missing eval is a professionalism problem of
-     its own, independent of how good the project is. -->
