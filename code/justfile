@@ -20,8 +20,8 @@ _default:
     @just --list
 
 # run a testbench:  just test <name> [verilator|icarus]
-test name sim="verilator":
-    make -C tb/{{name}} SIM={{sim}}
+test name="fifo_project" sim="icarus":
+    make -C {{name}} SIM={{sim}}
 
 # Run mutation testing on the FIFO project
 mutate name="fifo_project" sim="icarus":

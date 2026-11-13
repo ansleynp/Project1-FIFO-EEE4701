@@ -85,6 +85,15 @@ class FifoTxn:
                     vsc.weight(1, 7)
                 ])
 
+    @vsc.constraint
+    def data_constraint(self):
+        # Give zero and all-ones data a better chance of appearing
+        vsc.dist(self.wr_data, [
+            vsc.weight(0, 10),
+            vsc.weight((1, MASK - 1), 80),
+            vsc.weight(MASK, 10)
+        ])
+
 @cocotb.test()
 async def test_crv(dut):
     from driver import FifoDriver
@@ -319,4 +328,89 @@ async def test_scoreboard_directed(dut):
     dut._log.info(
         f"FIFO scoreboard passed "
         f"{scoreboard.cycles_checked} cycles"
+    )
+
+@cocotb.test()
+async def test_fifo_corner_cases(dut):
+    # Check boundary transitions, data patterns, pointer wraps, and live resets
+    from driver import FifoDriver
+    from monitor import FifoMonitor
+    from scoreboard import FifoScoreboard
+
+    cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
+    driver = FifoDriver(dut)
+    monitor = FifoMonitor(dut)
+    scoreboard = FifoScoreboard(WIDTH, DEPTH)
+
+    await driver.reset()
+    scoreboard.reset()
+
+    async def step(wr=0, rd=0, data=0):
+        # Always observe and check the same clock edge.
+        task = cocotb.start_soon(monitor.observe_cycle())
+        await driver.drive(wr_en=wr, rd_en=rd, wr_data=data)
+        sample = await task
+        scoreboard.check(sample)
+        return sample
+
+    patterns = [0x00, 0xFF, 0xAA, 0x55, 0x01, 0xFE, 0x80, 0x7F]
+
+    # Fill the FIFO with distinctive data and attempt an overflow.
+    for i in range(DEPTH):
+        await step(wr=1, data=patterns[i % len(patterns)])
+    assert scoreboard.model.full
+    await step(wr=1, data=0x5A)          # Full: write must be ignored
+    await step(wr=1, rd=1, data=0xA5)   # Full: read accepted, write ignored
+    await step(wr=1, rd=1, data=0x33)   # Part-full: both accepted
+
+    # Drain, attempt underflow, then write+read at empty.
+    for _ in range(DEPTH - 1):
+        await step(rd=1)
+    assert scoreboard.model.empty
+    await step(rd=1)                   # Empty: read ignored
+    await step(wr=1, rd=1, data=0xFF)  # Empty: write accepted, read ignored
+    await step(rd=1)
+    assert scoreboard.model.empty
+
+    # Force both pointers to wrap repeatedly, with FIFO ordering checked.
+    for i in range(DEPTH * 3):
+        await step(wr=1, data=patterns[i % len(patterns)])
+        await step(rd=1)
+
+    # Keep one element queued while both read and write are accepted.
+    await step(wr=1, data=0x55)
+    for i in range(DEPTH * 3):
+        await step(wr=1, rd=1, data=patterns[i % len(patterns)])
+    await step(rd=1)
+    assert scoreboard.model.empty
+
+    # Reset a partially occupied FIFO while a write is requested.
+    for data in [0x12, 0x34, 0x56]:
+        await step(wr=1, data=data)
+    dut.rst_n.value = 0
+    await step(wr=1, data=0xA5)
+    assert scoreboard.model.empty
+    dut.rst_n.value = 1
+
+    # Check fresh data after reset; no previous entries should reappear.
+    for data in [0x00, 0xFF, 0xAA, 0x55]:
+        await step(wr=1, data=data)
+    for _ in range(4):
+        await step(rd=1)
+    assert scoreboard.model.empty
+
+    # Also test reset while completely full with both enables asserted.
+    for i in range(DEPTH):
+        await step(wr=1, data=patterns[i % len(patterns)])
+    assert scoreboard.model.full
+    dut.rst_n.value = 0
+    await step(wr=1, rd=1, data=0x5A)
+    assert scoreboard.model.empty
+    dut.rst_n.value = 1
+    await step(wr=1, data=0xE7)
+    await step(rd=1)
+    assert scoreboard.model.empty
+
+    dut._log.info(
+        f"Corner-case test passed {scoreboard.cycles_checked} cycles"
     )
