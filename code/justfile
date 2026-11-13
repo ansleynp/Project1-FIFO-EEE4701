@@ -23,9 +23,9 @@ _default:
 test name sim="verilator":
     make -C tb/{{name}} SIM={{sim}}
 
-# score YOUR suite vs the RELEASED practice pool:  just mutate <name> [sim]
-mutate name sim="icarus":
-    python -m craft_mutate.mutate --tb tb/{{name}} --pool tb/{{name}}/mutants_released.yaml --sim {{sim}}
+# Run mutation testing on the FIFO project
+mutate name="fifo_project" sim="icarus":
+    python -m craft_mutate.mutate --tb {{name}} --dut dut/fifo.sv --pool {{name}}/crv/mutants_released.yaml --sim {{sim}}
 
 # run a coverage testbench (it writes its own report):  just cover <name>
 cover name sim="verilator":

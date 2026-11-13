@@ -36,6 +36,7 @@ milestone reads far better than a uniform one nobody believes.
 **Shared or paired work:** Shared discussions only about what we think is best for the repo setup to start off with.
 
 **What slipped, and who picked it up:**
+Didn't include correct directories to start off had to to add a tb/ and crv/ later on (picked up by Ansley Pennywitt)
 
 <!-- Every team has a milestone where something slipped. Saying so here, at the
      time, is what makes the rest of the file credible. -->
@@ -44,10 +45,9 @@ milestone reads far better than a uniform one nobody believes.
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-<<<<<<< HEAD
-| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, test_fifo.py commits: 0ff34ba, 01673d9 |               |
-| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, test_fifo.py commit: a43d47d |               |
-| Christian Reyes | Implemented FIFO scoreboard + added directed test to verify basic functionality | tb/scoreboard.py, test_fifo.py commit: 712a3d2 |               |
+| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, tb/test_fifo.py commits: 0ff34ba, 01673d9 |               |
+| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, tb/test_fifo.py commit: a43d47d |               |
+| Christian Reyes | Implemented FIFO scoreboard + added directed test to verify basic functionality | tb/scoreboard.py, tb/test_fifo.py commit: 712a3d2 |               |
 
 **Shared or paired work:**
 
@@ -59,7 +59,7 @@ milestone reads far better than a uniform one nobody believes.
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-|        |                 |                                  |               |
+| Ansley Pennywitt | Functional coverage implementation and integration (coverpoints, crosses, and coverage reporting) | tb/coverage.py, tb/test_fifo.py commit: 74e4dd7 |               |
 
 **Shared or paired work:**
 
