@@ -1,7 +1,7 @@
 # Contributions — Project-Group 3
 
 **Members:** Ansley Pennywitt (an855434) · Christian Reyes (ch784988)
-**Repo:** [<URL>](https://github.com/ansleynp/Project1-FIFO-EEE4701.git)
+**Repo:** [https://github.com/ansleynp/Project1-FIFO-EEE4701.git]
 **Track:** Project 1 - Constrained-Random Verification of a Synchronous FIFO
 **Last updated:** 11/12 · **through milestone:** M4
 
@@ -35,9 +35,9 @@ milestone reads far better than a uniform one nobody believes.
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, tb/test_fifo.py commits: 0ff34ba, 01673d9 | %30 |
-| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, tb/test_fifo.py commit: a43d47d | 25% |
-| Christian Reyes | Implemented FIFO scoreboard + added directed test to verify basic functionality | tb/scoreboard.py, tb/test_fifo.py commit: 712a3d2 | 30% |
+| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, crv/test_fifo.py commits: 0ff34ba, 01673d9 | %30 |
+| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, crv/test_fifo.py commit: a43d47d | 25% |
+| Christian Reyes | Implemented FIFO scoreboard + added directed test to verify basic functionality | tb/scoreboard.py, crv/test_fifo.py commit: 712a3d2 | 30% |
 | Ansley Pennywitt | Connected the driver, monitor, and scoreboard to the main test. | crv/test_fifo.py commit: 8284176 | 15% |
 
 **Shared or paired work:** We worked on separate parts of the testbench. Ansley combined the components so they could be tested together.
@@ -51,7 +51,7 @@ milestone reads far better than a uniform one nobody believes.
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
 | Christian Reyes | Added constrained-random FIFO stimulus, including fill and drain modes. | crv/test_fifo.py commit: 1f9f8d4 | 40% |
-| Ansley Pennywitt | Functional coverage implementation and integration (coverpoints, crosses, and coverage reporting) | tb/coverage.py, tb/test_fifo.py commit: 74e4dd7 | 40% |
+| Ansley Pennywitt | Functional coverage implementation and integration (coverpoints, crosses, and coverage reporting) | crv/coverage.py, crv/test_fifo.py commit: 74e4dd7 | 40% |
 | Christian Reyes | Wrote the initial verification plan. | vplan.md commit: 4279865 | 10% |
 | Ansley Pennywitt | Made updates to the verification plan and contribution records. | vplan.md, CONTRIBUTIONS.md commit: 7283ae4 | 10% |
 
@@ -65,7 +65,6 @@ milestone reads far better than a uniform one nobody believes.
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-|        |                 |                                  |               |
 | Christian Reyes | Filled in the mutation findings and documented the results. | FINDINGS.md commit: 1b847ed | 25% |
 | Christian Reyes | Cleaned up the verification-plan template. | vplan.md commit: 6e43376 | 10% |
 | Ansley Pennywitt | Added a larger directed corner-case test for full, empty, simultaneous requests, reset, and pointer wraparound. | crv/test_fifo.py commit: 7efb0f2 | 30% |
@@ -87,7 +86,6 @@ first, so it must be consistent with the four sections above.
 |--------|-----------------------------------------------|--------------:|
 | Ansley Pennywitt | Initial repository setup, driver and monitor, testbench integration, functional coverage, corner-case testing, coverage report, and file organization. | 50% |
 | Christian Reyes | Scoreboard, constrained-random stimulus and fill/drain modes, initial verification plan, findings, and documentation cleanup. | 50% |
-| Ansley Pennywitt | Initial repository setup, driver and monitor, testbench integration, functional coverage, corner-case testing, coverage report, and file organization. | 50% |
 
 **The three things this team did that we would each defend in an interview:**
 
