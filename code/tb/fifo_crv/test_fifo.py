@@ -1,4 +1,4 @@
-"""Project 1 Code
+"""Project 1 Constrained-Random Verification of a Synchronous FIFO
 """
 import random
 

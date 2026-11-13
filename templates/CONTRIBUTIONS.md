@@ -31,7 +31,7 @@ milestone reads far better than a uniform one nobody believes.
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-| Ansley | Created repo + configured the repo setup | commit: 8fdeb5f | 100% |
+| Ansley | Created repo + configured the repo setup | commit: 8fdeb5f | 5% |
 
 **Shared or paired work:** Shared discussions only about what we think is best for the repo setup to start off with.
 
@@ -44,8 +44,8 @@ milestone reads far better than a uniform one nobody believes.
 
 | Member | What they owned | Evidence (commits / files / PRs) | Approx. share |
 |--------|-----------------|----------------------------------|--------------:|
-| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, test_fifo.py commits: 0ff34ba, 01673d9 |               |
-| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, test_fifo.py commit: a43d47d |               |
+| Ansley Pennywitt | Implemented FIFO driver + added directed test to verify basic functionality | tb/driver.py, test_fifo.py commits: 0ff34ba, 01673d9 | none |
+| Ansley Pennywitt | Implemented FIFO monitor + added directed test to verify basic functionality | tb/monitor.py, test_fifo.py commit: a43d47d | none |
 | |                 |                                  |               |
 
 **Shared or paired work:**
@@ -105,13 +105,7 @@ artifact where one exists.
 
 ## AI assistance
 
-Consistent with the course policy and your `ctm` record: name where an assistant
-was used on capstone work, and who verified the output. The verifier is a named
-person, always.
-
-| Where | Used for | Verified by | Where the verification shows |
-|-------|----------|-------------|------------------------------|
-|       |          |             |                              |
+We moved this section to ai_log.md
 
 ---
 

@@ -1,4 +1,4 @@
-# Verification plan — Project 1 FIFO
+# Verification plan — Project 1 Constrained-Random Verification of a Synchronous FIFO
 
 **Author: Ansley Pennywitt, Christian Reyes** **Spec version: fifo.md** **Date: 11/12/26**
 
