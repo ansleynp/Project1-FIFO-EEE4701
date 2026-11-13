@@ -19,8 +19,8 @@ None all 8 release mutants were found! However, some mutants survived our earlie
 
 | Mutant | What it changes | Reachable by my stimulus? | Observable by my checks? | Why it survived |
 |--------|-----------------|---------------------------|--------------------------|-----------------|
-| full_offbyone (earlier survivor) | Sets full one entry too early. | Not in the early three-write test. | Yes, when we check the full flag near capacity. | Our first tests did not fill the FIFO far enough to see the mistake. Adding the fill-to-full test caught it. |
-| ignore_empty (earlier survivor) | Allows a read while the FIFO is empty. | Not before we added read-while-empty testing. | Yes, the scoreboard can check the count and flags after the read request. | Our earlier tests did not try reading an empty FIFO. The new empty-boundary test caught it. |
+| full_offbyone (earlier survivor) | Sets full one entry too early. | No, not in the early three-write test. | Yes, once we reach the nearly full condition and check the full flag. | **Reachability:** Our first tests did not fill the FIFO far enough to trigger the mistake. The fill-to-full test reached that condition and caught it. |
+| ignore_empty (earlier survivor) | Allows a read while the FIFO is empty. | No, not before we added read-while-empty testing. | Yes, the scoreboard can check the count and flags after the read request. | **Reachability:** Our earlier tests never requested a read while the FIFO was empty. The empty-boundary test reached that case and caught it. |
 
 The final hidden result was 18/20, so two hidden mutants still survived. The hidden grader did not give us their names or the changes they made, so we cannot say exactly why those two survived. The examples above are real survivors from our earlier released-pool testing, not guesses about the hidden mutants.
 
@@ -41,7 +41,7 @@ The final hidden result was 18/20, so two hidden mutants still survived. The hid
 What this suite still cannot catch, stated plainly. Name a fault class, not a
 mutant id — the pool is a sample, not the population.
 
-1. The random regression uses one fixed seed and 600 transactions. A bug that only happens after a different or longer sequence of reads and writes could still be missed.
-2. We run the tests using the default FIFO width and depth. A bug that only happens with other parameter values would not be found by this run.
+1. **Reachability:** The random regression uses one fixed seed and 600 transactions. A bug that only happens after a different or longer sequence of reads and writes could still be missed.
+2. **Reachability:** We run the tests using the default FIFO width and depth. A bug that only happens with other parameter values would not be reached by this run.
 
 **If I had another day:** I would run the constrained-random test with several different seeds to try more read/write sequences and see whether the hidden mutation score improves.

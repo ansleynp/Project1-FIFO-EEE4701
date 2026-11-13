@@ -58,14 +58,11 @@ An untraceable test is a test nobody can defend.
 
 | Test | Features | Kind | Pass criterion |
 |------|----------|------|----------------|
-| T1 — Reset | F1, F5, F6 | Directed | Reset clears the count, makes `empty` true, and makes `full` false, even when a read or write is requested. |
-| T2 — Reading and writing | F2, F3, F6, F8 | CRV and directed | Valid reads and writes update the count correctly, and data stays in the right order. |
-| T3 — Read and write together | F4, F6, F8 | CRV and directed | When both requests are allowed, both happen and the count stays the same. Boundary cases also follow the specification. |
-| T4 — Count and flags | F5, F6 | CRV | The count stays within the FIFO's limits, and the full and empty flags match the count. |
-| T5 — Full FIFO | F4, F5, F7 | CRV and directed | A write while full is ignored. A read is still allowed, including when both inputs are on. |
-| T6 — Empty FIFO | F4, F5, F7 | CRV and directed | A read while empty is ignored. A write is still allowed, including when both inputs are on. |
-| T7 — Data order and pointer wraparound | F8, F9 | CRV and directed | Data remains in the correct order after many reads and writes, including pointer wraparound. |
-| T8 — Write request during reset | F1 | Directed and coverage | A write during reset does not add data, and the reset/write combination is recorded by coverage. |
+| test_crv | F1–F9 | Constrained-random | The 600 seeded transactions will be checked against the reference queue. The test will exercise different FIFO counts, requests, data values, pointer wraparound, and a write during reset. |
+| test_driver_directed | F1, F2, F3, F6, F8 | Directed | Reset, a write, a read, and an idle cycle will produce the correct count and read data. |
+| test_monitor_directed | F1, F2, F3, F5, F6, F8 | Directed | The monitor will correctly record the FIFO inputs and outputs before and after write and read operations. |
+| test_scoreboard_directed | F1, F2, F3, F4, F5, F6, F7, F8 | Directed | The scoreboard will correctly compare the FIFO against the reference queue for writes, reads, simultaneous requests, and a read/write request while empty. |
+| test_fifo_corner_cases | F1–F9 | Directed | The test will check full and empty boundaries, ignored requests, simultaneous operations, data order, repeated pointer wraparound, and resets while partially filled or full. |
 
 **Planned constrained-random testing:** We will use three types of random traffic: one that favors writing, one that favors reading, and one that mixes both. In the write-heavy part, writes will have a 9-to-1 weight over no write, while reads will be less likely. In the read-heavy part, we will do the opposite. In the mixed part, we will favor writing when the FIFO is almost empty and reading when it is almost full. We will also give zero, maximum, and other data values different weights so all three types are tested. These weights guide the random test; they do not guarantee exact percentages in a run.
 
