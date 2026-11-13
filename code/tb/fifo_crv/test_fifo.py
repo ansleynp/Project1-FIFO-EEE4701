@@ -90,6 +90,7 @@ async def test_crv(dut):
     from driver import FifoDriver
     from monitor import FifoMonitor
     from scoreboard import FifoScoreboard
+    from coverage import FifoCoverage
 
     # Keep the random test reproducible
     random.seed(1)
@@ -101,9 +102,11 @@ async def test_crv(dut):
     driver = FifoDriver(dut)
     monitor = FifoMonitor(dut)
     scoreboard = FifoScoreboard(WIDTH, DEPTH)
+    coverage = FifoCoverage(WIDTH, DEPTH)
 
     await driver.reset()
     scoreboard.reset()
+    coverage.reset()
 
     txn = FifoTxn()
 
@@ -168,6 +171,28 @@ async def test_crv(dut):
 
         # Check the FIFO against the reference model
         scoreboard.check(sample)
+
+        coverage.sample(sample)
+
+    # Test a write request during reset
+    dut.rst_n.value = 0
+
+    monitor_task = cocotb.start_soon(
+        monitor.observe_cycle()
+    )
+
+    await driver.drive(
+        wr_en=1,
+        rd_en=0,
+        wr_data=55
+    )
+
+    sample = await monitor_task
+    scoreboard.check(sample)
+    coverage.sample(sample)
+
+    # Display functional coverage results
+    coverage.report(dut._log)
 
     # Print a summary of the test
     dut._log.info("CRV TEST RESULTS")
