@@ -1,4 +1,4 @@
-"""Project 1 Code
+"""Project 1 Constrained-Random Verification of a Synchronous FIFO
 """
 import random
 
@@ -29,36 +29,53 @@ class FifoTxn:
 
 @cocotb.test()
 async def test_crv(dut):
+    from driver import FifoDriver
+    from monitor import FifoMonitor
+    from scoreboard import FifoScoreboard
+
+    # Start the clock
     cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
-    model = FifoModel(WIDTH, DEPTH)
 
-    # reset
-    dut.wr_en.value = 0
-    dut.rd_en.value = 0
-    dut.wr_data.value = 0
-    dut.rst_n.value = 0
-    for _ in range(3):
-        await RisingEdge(dut.clk)
-    dut.rst_n.value = 1
-    model.reset()
-    await FallingEdge(dut.clk)
+    # Initialize verification components
+    driver = FifoDriver(dut)
+    monitor = FifoMonitor(dut)
+    scoreboard = FifoScoreboard(WIDTH, DEPTH)
 
-    random.seed(1)
+    # Reset the FIFO and reference model
+    await driver.reset()
+    scoreboard.reset()
+
+    # Generate and check randomized transactions
     txn = FifoTxn()
-    for _ in range(40):                      # TODO: far too short to fill/drain
+
+    for _ in range(40):
         txn.randomize()
-        wr, rd, data = int(txn.wr_en), int(txn.rd_en), int(txn.wr_data)
-        dut.wr_en.value = wr
-        dut.rd_en.value = rd
-        dut.wr_data.value = data
-        model.step(wr, data, rd)
-        await RisingEdge(dut.clk)
-        await Timer(1, units="ns")
-        # weak scoreboard: only the count is compared to the model
-        assert int(dut.count.value) == model.count, \
-            f"count {int(dut.count.value)} != model {model.count}"
-        # TODO: also check full, empty, and rd_data (the FWFT head) every cycle.
-        await FallingEdge(dut.clk)
+
+        wr = int(txn.wr_en)
+        rd = int(txn.rd_en)
+        data = int(txn.wr_data)
+
+        # Start observing the next clock cycle
+        monitor_task = cocotb.start_soon(
+            monitor.observe_cycle()
+        )
+
+        # Apply the randomized transaction
+        await driver.drive(
+            wr_en=wr,
+            rd_en=rd,
+            wr_data=data
+        )
+
+        # Collect the monitor's observations
+        sample = await monitor_task
+
+        # Check actual behavior against the reference model
+        scoreboard.check(sample)
+
+    dut._log.info(
+        f"CRV test passed {scoreboard.cycles_checked} cycles"
+    )
 
 @cocotb.test()
 async def test_driver_directed(dut):

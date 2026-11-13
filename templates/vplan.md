@@ -1,4 +1,4 @@
-# Verification plan — Project 1 FIFO
+# Verification plan — Project 1 Constrained-Random Verification of a Synchronous FIFO
 
 **Author: Ansley Pennywitt, Christian Reyes** **Spec version: fifo.md** **Date: 11/12/26**
 
@@ -75,8 +75,8 @@ An untraceable test is a test nobody can defend.
 
 | # | Ambiguity or risk | Where in the spec | How I resolved it | Residual |
 |---|-------------------|-------------------|-------------------|----------|
-| 1 | The project instructions mention an `almost_full` signal and optional FWFT operation, but neither is configurable in the provided design. | Project handout; FIFO Parameters and Ports | We will verify the features defined in the provided FIFO specification and document the differences. | Instructor clarification may be needed. |
-| 2 | `rd_data` is only guaranteed to be valid when the FIFO is not empty. | Ports | The scoreboard will only check `rd_data` when valid data is present. | The value of `rd_data` while empty will not be verified. |
+| 1 | The project instructions mention an almost_full signal and optional FWFT operation, but neither is configurable in the provided design. | Project handout; FIFO Parameters and Ports | We will verify the features defined in the provided FIFO specification and document the differences. | Instructor clarification may be needed. |
+| 2 | rd_data is only guaranteed to be valid when the FIFO is not empty. | Ports | The scoreboard will only check rd_data when valid data is present. | The value of rd_data while empty will not be verified. |
 | 3 | The driver and monitor could sample signals at the wrong time, causing incorrect test results. | Ports; Behavior | Inputs will be applied before rising clock edges, and outputs will be sampled after they settle. | Timing will need to be checked during integration and longer regressions. |
 | 4 | Random transactions may not reach full, empty, or pointer-wraparound conditions often enough. | Corner cases | Constraints will be adjusted based on the coverage results to reach missing scenarios. | Coverage gaps may remain and will need to be documented. |
 | 5 | The specification does not identify every supported WIDTH and DEPTH configuration. | Parameters | Testing will begin with the default configuration, and additional configurations will be selected by the team. | Behavior outside the tested configurations will not be verified. |

@@ -1,4 +1,4 @@
-# FINDINGS — <lab / project> · <your name>
+# FINDINGS — Project 1 Constrained-Random Verification of a Synchronous FIFO · Ansley Pennywitt · Christian Reyes
 
 > The number is the start of the argument, not the end of it. This file is
 > where you say what the number means and what it does not cover.
