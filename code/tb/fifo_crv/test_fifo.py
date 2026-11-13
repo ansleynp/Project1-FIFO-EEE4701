@@ -123,3 +123,55 @@ async def test_monitor_directed(dut):
     assert read_sample["post_empty"] == 1
 
     dut._log.info("FIFO monitor directed test passed")
+
+@cocotb.test()
+async def test_scoreboard_directed(dut):
+    from driver import FifoDriver
+    from monitor import FifoMonitor
+    from scoreboard import FifoScoreboard
+
+    cocotb.start_soon(Clock(dut.clk, 10, units="ns").start())
+
+    driver = FifoDriver(dut)
+    monitor = FifoMonitor(dut)
+    scoreboard = FifoScoreboard(WIDTH, DEPTH)
+
+    # Reset the FIFO and reference model
+    await driver.reset()
+    scoreboard.reset()
+
+    # Basic transactions to test scoreboard integration
+    transactions = [
+        (1, 0, 42),   # Write 42
+        (1, 0, 99),   # Write 99
+        (1, 1, 17),   # Read and write simultaneously
+        (0, 1, 0),    # Read
+        (0, 1, 0),    # Read
+        (1, 1, 55),   # Read/write while empty
+        (0, 1, 0),    # Read
+        (0, 0, 0),    # Idle
+    ]
+
+    for wr, rd, data in transactions:
+        # Start observing the next clock cycle
+        monitor_task = cocotb.start_soon(
+            monitor.observe_cycle()
+        )
+
+        # Apply the requested transaction
+        await driver.drive(
+            wr_en=wr,
+            rd_en=rd,
+            wr_data=data,
+        )
+
+        # Get the monitor's observations
+        sample = await monitor_task
+
+        # Check the observations against the reference model
+        scoreboard.check(sample)
+
+    dut._log.info(
+        f"FIFO scoreboard passed "
+        f"{scoreboard.cycles_checked} cycles"
+    )

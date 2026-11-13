@@ -6,7 +6,7 @@
 > them agree. A file written the night of M4 will not survive that check, and
 > the way it fails is by being vague.
 
-**Members:** Ansley Pennywitt (an855434) · Christian Reyes (NID)
+**Members:** Ansley Pennywitt (an855434) · Christian Reyes (ch784988)
 **Repo:** [<URL>](https://github.com/ansleynp/Project1-FIFO-EEE4701.git)
 **Track:** Project 1 - Constrained-Random Verification of a Synchronous FIFO
 **Last updated:** 11/12 · **through milestone:** M2
