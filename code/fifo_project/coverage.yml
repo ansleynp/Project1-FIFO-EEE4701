@@ -1,0 +1,112 @@
+top:
+  cover_percentage: 100.0
+  coverage: 43
+  size: 43
+  type: <class 'cocotb_coverage.coverage.CoverItem'>
+top.data:
+  at_least: 1
+  bins:_hits:
+    max: 36
+    other: 241
+    zero: 40
+  cover_percentage: 100.0
+  coverage: 3
+  size: 3
+  type: <class 'cocotb_coverage.coverage.CoverPoint'>
+  weight: 1
+top.occ:
+  at_least: 1
+  bins:_hits:
+    empty: 40
+    full: 40
+    near_empty: 69
+    near_full: 96
+    partial: 355
+  cover_percentage: 100.0
+  coverage: 5
+  size: 5
+  type: <class 'cocotb_coverage.coverage.CoverPoint'>
+  weight: 1
+top.occ_x_op:
+  at_least: 1
+  bins:_hits:
+    ('empty', 'both'): 18
+    ('empty', 'idle'): 6
+    ('empty', 'read'): 8
+    ('empty', 'write'): 8
+    ('full', 'both'): 9
+    ('full', 'idle'): 8
+    ('full', 'read'): 11
+    ('full', 'write'): 12
+    ('near_empty', 'both'): 20
+    ('near_empty', 'idle'): 10
+    ('near_empty', 'read'): 25
+    ('near_empty', 'write'): 14
+    ('near_full', 'both'): 32
+    ('near_full', 'idle'): 20
+    ('near_full', 'read'): 24
+    ('near_full', 'write'): 20
+    ('partial', 'both'): 112
+    ('partial', 'idle'): 72
+    ('partial', 'read'): 78
+    ('partial', 'write'): 93
+  cover_percentage: 100.0
+  coverage: 20
+  size: 20
+  type: <class 'cocotb_coverage.coverage.CoverCross'>
+  weight: 1
+top.op:
+  at_least: 1
+  bins:_hits:
+    both: 191
+    idle: 116
+    read: 146
+    write: 147
+  cover_percentage: 100.0
+  coverage: 4
+  size: 4
+  type: <class 'cocotb_coverage.coverage.CoverPoint'>
+  weight: 1
+top.reset:
+  at_least: 1
+  bins:_hits:
+    0: 2
+    1: 600
+  cover_percentage: 100.0
+  coverage: 2
+  size: 2
+  type: <class 'cocotb_coverage.coverage.CoverPoint'>
+  weight: 1
+top.reset_x_wr:
+  at_least: 1
+  bins:_hits:
+    (0, 0): 1
+    (0, 1): 1
+    (1, 0): 262
+    (1, 1): 338
+  cover_percentage: 100.0
+  coverage: 4
+  size: 4
+  type: <class 'cocotb_coverage.coverage.CoverCross'>
+  weight: 1
+top.wr:
+  at_least: 1
+  bins:_hits:
+    0: 263
+    1: 339
+  cover_percentage: 100.0
+  coverage: 2
+  size: 2
+  type: <class 'cocotb_coverage.coverage.CoverPoint'>
+  weight: 1
+top.wrap:
+  at_least: 1
+  bins:_hits:
+    none: 523
+    read: 38
+    write: 39
+  cover_percentage: 100.0
+  coverage: 3
+  size: 3
+  type: <class 'cocotb_coverage.coverage.CoverPoint'>
+  weight: 1

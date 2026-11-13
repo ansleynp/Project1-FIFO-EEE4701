@@ -126,3 +126,5 @@ class FifoCoverage:
             log.info(f"{label}: {entry.cover_percentage:.1f}%")
             if missing:
                 log.info(f"  Missing: {', '.join(missing)}")
+
+        coverage_db.export_to_yaml(filename="coverage.yml")
