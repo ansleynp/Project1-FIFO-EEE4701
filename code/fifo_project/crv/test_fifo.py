@@ -44,12 +44,14 @@ async def test_crv(dut):
     read_while_empty = 0
     both_while_full = 0
     both_while_empty = 0
+    occupancy_counts = [0] * (DEPTH + 1)
 
     # Generate 600 constrained-random transactions
     for i in range(600):
 
         # Tell the generator the current FIFO count
         count = scoreboard.model.count
+        occupancy_counts[count] += 1
         txn.count = count
 
         # Switch traffic type every 25 transactions
@@ -130,6 +132,9 @@ async def test_crv(dut):
     dut._log.info(f"Reads while empty: {read_while_empty}")
     dut._log.info(f"Both while full: {both_while_full}")
     dut._log.info(f"Both while empty: {both_while_empty}")
+    dut._log.info("OCCUPANCY COUNTS (before each randomized transaction):")
+    for occupancy, cycles in enumerate(occupancy_counts):
+        dut._log.info(f"Occupancy {occupancy}: {cycles}")
 
 @cocotb.test()
 async def test_driver_directed(dut):
