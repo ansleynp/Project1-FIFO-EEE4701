@@ -39,15 +39,20 @@ where a bug would hide — say which bug.
 
 | ID | Coverpoint | Bins | Why these bins |
 |----|-----------|------|----------------|
-| C1 |           |      |  |
+| C1 | FIFO occupancy | Empty (0), near-empty (1), partial (2–6), near-full (7), full (8) | Checks that testing reaches different FIFO occupancy levels, especially the full and empty boundaries. |
+| C2 | Read/write operations | Idle, write only, read only, simultaneous read/write | Ensures that all four combinations of read and write requests are exercised. |
+| C3 | Reset | Asserted, deasserted | Checks that testing includes both reset and normal FIFO operation. |
+| C4 | Pointer wraparound | No wraparound, write pointer wraparound, read pointer wraparound | Ensures that reads and writes continue to work when the pointers return to the beginning of memory. |
+| C5 | Write data values | Zero, maximum value, other values | Checks that different data values are written into the FIFO, including boundary values for the configured data width. |
 
 **Crosses**
 
 | ID | Cross | The interaction it is aimed at |
 |----|-------|-------------------------------|
-| X1 |       |  |
+| X1 | FIFO occupancy × read/write operations | Checks how read and write requests behave at different occupancy levels. This can reveal bugs involving writes while full, reads while empty, and simultaneous operations at the boundaries. |
+| X2 | Reset × write enable | Checks that write requests during reset are exercised. This can reveal bugs where a write is incorrectly accepted while reset is asserted. |
 
-**Illegal / ignore bins:** <what is excluded and on what authority in the spec>
+**Illegal / ignore bins:** The FIFO specification defines the behavior of writes while full and reads while empty, so these conditions will not be excluded from coverage. Normal occupancy and operation coverage will only be sampled when reset is inactive, since reset takes priority over read and write requests. The value of rd_data when the FIFO is empty will not be checked because the specification does not guarantee valid data in that condition. No additional read/write combinations are identified as illegal by the specification.
 
 ## 4. Test matrix
 
@@ -56,20 +61,33 @@ An untraceable test is a test nobody can defend.
 
 | Test | Features | Kind | Pass criterion |
 |------|----------|------|----------------|
-|      |          | directed / random / assertion / formal | |
+| T1 — Reset | F1, F5, F6 | Directed | Reset clears the FIFO count and sets the full and empty flags correctly. Read and write requests during reset do not change the reset result. |
+| T2 — Read and write operations | F2, F3, F6, F8 | CRV | Accepted writes and reads update the count correctly, and data remains in the correct order. |
+| T3 — Simultaneous read/write | F4, F6, F8 | CRV | Both operations succeed when the FIFO is neither full nor empty, and the count remains unchanged. |
+| T4 — Count and status flags | F5, F6 | CRV | The count remains within the FIFO's capacity, and full and empty are asserted at the correct occupancy levels. |
+| T5 — Full boundary | F4, F5, F7 | CRV | Writes are ignored when full, while valid reads are accepted, including simultaneous read/write requests. |
+| T6 — Empty boundary | F4, F5, F7 | CRV | Reads are ignored when empty, while valid writes are accepted, including simultaneous read/write requests. |
+| T7 — Data ordering and pointer wraparound | F8, F9 | CRV | Data remains in the correct FIFO order through repeated reads and writes, including when both the read and write pointers wrap around. |
+| T8 — Parameter configurations | F10 | Simulation | The FIFO operates correctly with the selected WIDTH and DEPTH configurations. |
+| T9 — Reset with write request | F1 | Directed / coverage | A write request during reset is exercised and recorded, and the reset behavior matches the specification. |
 
 ## 5. Risk and spec ambiguity
 
 | # | Ambiguity or risk | Where in the spec | How I resolved it | Residual |
 |---|-------------------|-------------------|-------------------|----------|
-| 1 |                   |                   | asked / assumed / tested both | |
+| 1 | The project instructions mention an `almost_full` signal and optional FWFT operation, but neither is configurable in the provided design. | Project handout; FIFO Parameters and Ports | We will verify the features defined in the provided FIFO specification and document the differences. | Instructor clarification may be needed. |
+| 2 | `rd_data` is only guaranteed to be valid when the FIFO is not empty. | Ports | The scoreboard will only check `rd_data` when valid data is present. | The value of `rd_data` while empty will not be verified. |
+| 3 | The driver and monitor could sample signals at the wrong time, causing incorrect test results. | Ports; Behavior | Inputs will be applied before rising clock edges, and outputs will be sampled after they settle. | Timing will need to be checked during integration and longer regressions. |
+| 4 | Random transactions may not reach full, empty, or pointer-wraparound conditions often enough. | Corner cases | Constraints will be adjusted based on the coverage results to reach missing scenarios. | Coverage gaps may remain and will need to be documented. |
+| 5 | The specification does not identify every supported WIDTH and DEPTH configuration. | Parameters | Testing will begin with the default configuration, and additional configurations will be selected by the team. | Behavior outside the tested configurations will not be verified. |
+| 6 | The FIFO's internal read and write pointers are not exposed as output signals. | FIFO interface and corner cases | Track accepted reads and writes to determine when pointer wraparound should occur. | The coverage model will rely on tracking pointer movement rather than directly observing the internal pointers.
 
 ## 6. Closure criteria
 
 State the numbers *before* you start, so closure is a measurement and not a
 negotiation.
 
-- Functional coverage target: **__%** of the model in section 3
-- Mutation target: **__/__** on the hidden pool
-- Assertions: every property paired with a passing `cover` (no vacuous passes)
-- What I will report as **not verified**:
+- Functional coverage target: **100%** of the model in section 3
+- Mutation target: **90%** on the hidden pool
+- Assertions: We currently plan to use a functional coverpoint rather than SystemVerilog assertions for the required Security & Trust condition. If assertions are added, we will also check that their triggering conditions are exercised.
+- What I will report as **not verified**: Any unresolved coverage gaps, surviving mutants, untested parameter configurations, or behaviors not defined by the provided FIFO specification.
