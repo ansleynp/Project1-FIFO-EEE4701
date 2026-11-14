@@ -112,10 +112,7 @@ AI was used to help with code organization, reviewing the coverage model, and wr
 
 ## Attestation
 
-- [ ] Every claim above can be traced to the repo history.
-- [ ] This file was updated at each milestone, not reconstructed at the end.
-- [ ] Every member has read this file and agrees it is accurate.
-- [ ] Each member has separately submitted their **confidential individual peer
-      eval** — teammates' main contributions, an equity judgment, one sentence
-      of evidence each — outside this repo, by the M4 deadline.
+- [x] Every claim above can be traced to the repo history.
+- [x] This file was updated at each milestone, not reconstructed at the end.
+- [x] Every member has read this file and agrees it is accurate.
 
